@@ -4,7 +4,7 @@
             <div 
                 v-for="(item, index) in shortcutList" 
                 :key="index"
-                class="flex_layout tags-item_wrap"
+                class="flex_layout tags-item_wrap pointer"
                 :style="{
                     '--background': item.background,
                     '--color': item.color
@@ -20,7 +20,8 @@
 </template>
 
 <script>
-import { htmlEscape } from '@/utils/html.js'
+import { nanoid } from 'nanoid'
+import { htmlEscape, createSpanStylesheet } from '@/utils/html.js'
 import { highlightRange } from '@/utils/selectionTools.js'
 
 export default {
@@ -31,7 +32,7 @@ export default {
                     label: 'money',
                     hotKey: 1,
                     color: '#72bf7d',
-                    background: '#72bf7d26'
+                    background: 'rgba(114, 191, 160, 0.3)'
                 },
                 {
                     label: 'fact',
@@ -64,14 +65,19 @@ export default {
 
             return htmlEscape(content).replace(/\n|\r/g, newLineReplacement)
         },
-        handleMouseUp() {
+        handleMouseUp(ev) {
+            console.log(ev)
             const selection = window.getSelection()
             const selectionText = selection.toString().replace(/[\n\r]/g, "\\n");
 
             if (selection.isCollapsed) return;
             for (let i = 0; i < selection.rangeCount; i++) {
                 const range = selection.getRangeAt(i)
-                highlightRange(range, { label: this.selectObj.label, classNames: ['aaa'] })
+                console.log(nanoid(5))
+                // 创建style标签存入这个标注固定的样式
+                const { className } = createSpanStylesheet(ev.target.ownerDocument, nanoid(5), this.selectObj.background)
+                //  span标签包裹range内的文字
+                highlightRange(range, { label: this.selectObj.label, classNames: [className] })
             }
             console.log(selection, selectionText)
         }
@@ -82,6 +88,9 @@ export default {
 <style>
 .aaa {
     background-color: yellow;
+}
+.pointer {
+    cursor: pointer;
 }
 .flex_layout {
     display: flex;

@@ -335,13 +335,12 @@ export const highlightRange = (range, { label, classNames }) => {
   const highlights = [];
 
   /**
-   * Wrapper with predefined classNames and cssStyles
+   * 选中部分包裹样式
    * @param  {[Node, number, number]} args
    */
-  const applyStyledHighlight = (...args) => highlightRangePart(...[...args, classNames]);
+  const applyStyledHighlight = (...args) => highlightRangePart(...[...args, classNames, label]);
 
-  // If start and end nodes are equal, we don't need
-  // to perform any additional work, just highlighting as is
+  // 选择的range的开始节点与结束节点在一个dom里
   if (startContainer === endContainer) {
     highlights.push(applyStyledHighlight(startContainer, startOffset, endOffset));
   } else {
@@ -362,7 +361,7 @@ export const highlightRange = (range, { label, classNames }) => {
   }
 
   const lastLabel = highlights[highlights.length - 1];
-
+  // 设置data-label属性
   if (lastLabel) lastLabel.setAttribute("data-label", label ?? "");
 
   return highlights;
@@ -378,7 +377,7 @@ export const highlightRange = (range, { label, classNames }) => {
  * @param {object} cssStyles
  * @param {string[]} classNames
  */
-export const highlightRangePart = (container, startOffset, endOffset, classNames) => {
+export const highlightRangePart = (container, startOffset, endOffset, classNames, label) => {
   let spanHighlight;
   const text = container.textContent;
   const parent = container.parentNode;
@@ -392,35 +391,33 @@ export const highlightRangePart = (container, startOffset, endOffset, classNames
     const parentNode = parent.parentNode;
 
     parentNode.replaceChild(placeholder, parent);
-    spanHighlight = wrapWithSpan(parent, classNames);
+    spanHighlight = wrapWithSpan(parent, classNames, label);
     parentNode.replaceChild(spanHighlight, placeholder);
   } else {
-    // Extract text content that matches offsets
+    // 找出需要包裹的文字
     const content = text.substring(startOffset, endOffset);
     // Create text node that will be highlighted
     const highlitedNode = container.ownerDocument.createTextNode(content);
 
-    // Split the container in three parts
+    // 将父级元素分割为三部分
     const noseNode = container.cloneNode();
     const tailNode = container.cloneNode();
 
-    // Add all the text BEFORE selection
+    // highlighted之前的元素
     noseNode.textContent = text.substring(0, startOffset);
+    // highlighted之后的元素
     tailNode.textContent = text.substring(endOffset, text.length);
 
-    // To avoid weird dom mutation we assemble replacement
-    // beforehands, it allows to replace original node
-    // directly without extra work
+    // 父级元素的拷贝
     const textFragment = container.ownerDocument.createDocumentFragment();
-
-    spanHighlight = wrapWithSpan(highlitedNode, classNames);
+    // 创建highlighted元素用span标签包裹
+    spanHighlight = wrapWithSpan(highlitedNode, classNames, label);
 
     if (noseNode.length) textFragment.appendChild(noseNode);
     textFragment.appendChild(spanHighlight);
     if (tailNode.length) textFragment.appendChild(tailNode);
 
-    // At this point we have three nodes in the tree
-    // one of them is our selected range
+    // 直接替换为最新的元素
     parent.replaceChild(textFragment, container);
   }
 
