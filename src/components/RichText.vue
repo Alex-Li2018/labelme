@@ -66,7 +66,6 @@ export default {
             return htmlEscape(content).replace(/\n|\r/g, newLineReplacement)
         },
         handleMouseUp(ev) {
-            console.log(ev)
             const selection = window.getSelection()
             const selectionText = selection.toString().replace(/[\n\r]/g, "\\n");
 
