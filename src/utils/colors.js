@@ -1,37 +1,144 @@
-import chroma from "chroma-js";
 
-const gradients = [
-  "#c22525",
-  "#c13025",
-  "#bf3b24",
-  "#be4624",
-  "#bc5124",
-  "#bb5b23",
-  "#ba6623",
-  "#b87023",
-  "#b77a22",
-  "#b58422",
-  "#b48d22",
-  "#b39722",
-  "#b1a021",
-  "#b0aa21",
-  "#aaae21",
-  "#9ead20",
-  "#93ab20",
-  "#87aa20",
-  "#7ca91f",
-  "#71a71f",
-  "#66a61f",
-  "#5ba41e",
-  "#51a31e",
-  "#46a21e",
-  "#3ca01e",
-  "#329f1d",
-  "#289d1d",
-  "#1e9c1d",
-  "#1c9a24",
-  "#1c992d",
-  "#1c992d",
+
+const colors = [
+  "#800000",
+  "#483d8b",
+  "#2f4f4f",
+  "#00ced1",
+  "#9400d3",
+  "#ff1493",
+  "#00bfff",
+  "#696969",
+  "#1e90ff",
+  "#daa520",
+  "#808080",
+  "#ff6347",
+  "#ff69b4",
+  "#cd5c5c",
+  "#4b0082",
+  "#faebd7",
+  "#00ffff",
+  "#7fffd4",
+  "#f0ffff",
+  "#ff0000",
+  "#f5f5dc",
+  "#ffebcd",
+  "#0000ff",
+  "#8a2be2",
+  "#a52a2a",
+  "#deb887",
+  "#5f9ea0",
+  "#7fff00",
+  "#d2691e",
+  "#ff7f50",
+  "#6495ed",
+  "#fff8dc",
+  "#dc143c",
+  "#00ffff",
+  "#00008b",
+  "#008b8b",
+  "#b8860b",
+  "#a9a9a9",
+  "#006400",
+  "#bdb76b",
+  "#8b008b",
+  "#556b2f",
+  "#ff8c00",
+  "#9932cc",
+  "#8b0000",
+  "#e9967a",
+  "#8fbc8f",
+  "#b22222",
+  "#fffaf0",
+  "#228b22",
+  "#ff00ff",
+  "#dcdcdc",
+  "#f8f8ff",
+  "#ffd700",
+  "#008000",
+  "#adff2f",
+  "#f0fff0",
+  "#fffff0",
+  "#f0e68c",
+  "#e6e6fa",
+  "#fff0f5",
+  "#7cfc00",
+  "#fffacd",
+  "#add8e6",
+  "#f08080",
+  "#e0ffff",
+  "#fafad2",
+  "#d3d3d3",
+  "#90ee90",
+  "#ffb6c1",
+  "#ffa07a",
+  "#20b2aa",
+  "#87cefa",
+  "#778899",
+  "#b0c4de",
+  "#ffffe0",
+  "#00ff00",
+  "#32cd32",
+  "#faf0e6",
+  "#ff00ff",
+  "#66cdaa",
+  "#0000cd",
+  "#ba55d3",
+  "#9370d8",
+  "#3cb371",
+  "#7b68ee",
+  "#00fa9a",
+  "#48d1cc",
+  "#c71585",
+  "#191970",
+  "#f5fffa",
+  "#ffe4e1",
+  "#ffe4b5",
+  "#ffdead",
+  "#000080",
+  "#fdf5e6",
+  "#808000",
+  "#6b8e23",
+  "#ffa500",
+  "#ff4500",
+  "#da70d6",
+  "#eee8aa",
+  "#98fb98",
+  "#afeeee",
+  "#d87093",
+  "#ffefd5",
+  "#ffdab9",
+  "#cd853f",
+  "#ffc0cb",
+  "#dda0dd",
+  "#b0e0e6",
+  "#800080",
+  "#663399",  
+  "#bc8f8f",
+  "#4169e1",
+  "#8b4513",
+  "#fa8072",
+  "#f4a460",
+  "#2e8b57",
+  "#fff5ee",
+  "#a0522d",
+  "#c0c0c0",
+  "#87ceeb",
+  "#6a5acd",
+  "#708090",
+  "#fffafa",
+  "#00ff7f",
+  "#4682b4",
+  "#d2b48c",
+  "#008080",
+  "#d8bfd8",
+  "#40e0d0",
+  "#ee82ee",
+  "#f5deb3",
+  "#ffffff",
+  "#f5f5f5",
+  "#ffff00",
+  "#9acd32",
 ];
 
 const colorNames = {
@@ -181,6 +288,7 @@ const colorNames = {
 const RGBARegEx = /^rgba\((25[0-5]|2[0-4]\d|1\d{2}|\d\d?)\s*,\s*(25[0-5]|2[0-4]\d|1\d{2}|\d\d?)\s*,\s*(25[0-5]|2[0-4]\d|1\d{2}|\d\d?)\s*(?:,\s*([01]\.?\d*?))\)$/;
 const RGBRegEx = /^rgb\((25[0-5]|2[0-4]\d|1\d{2}|\d\d?)\s*,\s*(25[0-5]|2[0-4]\d|1\d{2}|\d\d?)\s*,\s*(25[0-5]|2[0-4]\d|1\d{2}|\d\d?)\s*\)$/;
 
+// 16进制转rgb
 function hexToRGBArray(hex) {
   const rgb = [0, 0, 0];
   /**
@@ -205,6 +313,7 @@ function hexToRGBArray(hex) {
 
 /**
  * Convert HEX to RGBA
+ * 16十进制转rgba
  * @param {string} hex 3 digits + # or 6 digits + #
  * @param {number?} opacity From 0 to 1
  */
@@ -221,6 +330,7 @@ export function hexToRGBA(hex, opacity) {
 
 /**
  * Color to RGBA
+ * 颜色简称转rgba
  * @param {*} value
  */
 export function colorToRGBA(value, alpha) {
@@ -269,6 +379,7 @@ export function stringToColor(str) {
 
 /**
  * Change alpha channel of RGBA
+ * 增加透明度
  * @param {string} rgba
  * @param {number} alpha from 0 to 1
  */
@@ -276,13 +387,16 @@ export function rgbaChangeAlpha(rgba, alpha) {
   return rgba.replace(/[\d\.]+\)$/g, `${alpha})`); // eslint-disable-line no-useless-escape
 }
 
-// given number from 0.00 to 1.00 return a color from red to green
-export function getScaleGradient(number) {
-  return gradients[Math.ceil(number * 30)];
+// given fix colors
+export function getColors(number) {
+  const index = number % (colors.length)
+
+  return colors[index];
 }
 
 /**
  * Removes alpha channel by merging the color with `base`
+ * 去掉透明色
  * @param {number} r Red channel
  * @param {number} g Green channel
  * @param {number} b Blue channel
@@ -314,6 +428,7 @@ export const contrastColor = color => {
 
 /*
  * Splits a color into an array of RGBA
+ * 将颜色分割为一个数组
  * @param {string} color
  */
 export function colorToRGBAArray(value) {
@@ -348,7 +463,7 @@ export function colorToRGBAArray(value) {
 }
 
 /**
- * Packs rgb array into hex color format
+ * rgb的数组转16进制
  * @param {string} color
  */
 export function rgbArrayToHex(value) {
@@ -360,15 +475,4 @@ export function rgbArrayToHex(value) {
 
 export function rgbaArrayToRGBA(rgba) {
   return `rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, ${rgba[3]})`;
-}
-
-export function over(color, bgColor = "white") {
-  color = chroma(color);
-  bgColor = chroma(bgColor);
-  const k1 = color.alpha();
-  const k2 = bgColor.alpha() * (1 - k1);
-  const k12 = k1 + k2;
-  const bgRGB = bgColor.rgb() || [];
-
-  return chroma([...color.rgb().map((c, idx) => (k1 * c + k2 * bgRGB[idx]) / k12), k12]);
 }

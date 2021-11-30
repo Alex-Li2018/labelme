@@ -433,7 +433,7 @@ export const highlightRangePart = (container, startOffset, endOffset, classNames
  */
 export const wrapWithSpan = (node, classNames, label) => {
   const highlight = node.ownerDocument.createElement("span");
-
+ 
   highlight.appendChild(node);
 
   applySpanStyles(highlight, { classNames, label });

@@ -79,7 +79,7 @@ export const createSpanStylesheet = (document, identifier, color) => {
       cursor: var(${variables.cursor}, pointer);
       border: 1px dashed transparent;
     `,
-    [`${className}[data-label]::after`]: `
+    [`${className}[data-label]::before`]: `
       padding: 2px 2px;
       font-size: 9.5px;
       font-weight: bold;

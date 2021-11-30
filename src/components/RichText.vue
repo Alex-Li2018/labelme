@@ -21,6 +21,7 @@
 
 <script>
 import { nanoid } from 'nanoid'
+import { getColors, hexToRGBA } from '@/utils/colors.js'
 import { htmlEscape, createSpanStylesheet } from '@/utils/html.js'
 import { highlightRange } from '@/utils/selectionTools.js'
 
@@ -31,14 +32,14 @@ export default {
                 {
                     label: 'money',
                     hotKey: 1,
-                    color: '#72bf7d',
-                    background: 'rgba(114, 191, 160, 0.3)'
+                    color: '#fff',
+                    background: ''
                 },
                 {
                     label: 'fact',
                     hotKey: 2,
-                    color: '#bf8072',
-                    background: '#bf807226'
+                    color: '#fff',
+                    background: ''
                 },
             ],
             selectObj: {
@@ -52,9 +53,16 @@ export default {
         }
     },
     created() {
+        this.initColors()
         this.html = this.initAnnotation()
     },
     methods: {
+        initColors() {
+            this.shortcutList.forEach((item, index) => {
+                item.background = hexToRGBA(getColors(index), 0.5)
+            })
+            console.log(this.shortcutList)
+        },
         selectAnnotationType(item) {
             this.selectObj = item
         },
@@ -72,7 +80,6 @@ export default {
             if (selection.isCollapsed) return;
             for (let i = 0; i < selection.rangeCount; i++) {
                 const range = selection.getRangeAt(i)
-                console.log(nanoid(5))
                 // 创建style标签存入这个标注固定的样式
                 const { className } = createSpanStylesheet(ev.target.ownerDocument, nanoid(5), this.selectObj.background)
                 //  span标签包裹range内的文字
@@ -109,16 +116,16 @@ export default {
     font-size: 14px;
     line-height: 26px;
     background-color: var(--background);
-    color: #333;
     border-left-style: solid;
     border-left-width: 4px;
     border-left-color: var(--color);
     position: relative;
     align-items: center;
     margin-left: 8px;
+    color: var(--color)
 }
 .tags-hot-key {
-    color: rgba(0,0,0,0.4);
+    color: var(--color);
     font-size: 13px;
     margin-left: 12px;
 }
