@@ -464,6 +464,7 @@ export const applySpanStyles = (spanNode, { classNames, label }) => {
  * @param {Node} root
  */
 export const findNodesBetween = (startNode, endNode, root) => {
+  console.log(root)
   // Tree walker creates flat representation of DOM
   // it allows to iterate over nodes more efficiently
   // as we don't need to go up and down on a tree
